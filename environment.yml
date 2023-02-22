@@ -1,4 +1,4 @@
-name: ifi-terminal-app
+name: ifi-terminal
 channels:
   - defaults
 dependencies:
