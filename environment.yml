@@ -1,4 +1,4 @@
-name: ifi-terminal
+name: ifi_terminal
 channels:
   - defaults
 dependencies:
@@ -14,6 +14,7 @@ dependencies:
   - pytest
   - pyyaml
   - unittest2
+  - requests
   - pip:
     - yfinance
     - finnhub-python
