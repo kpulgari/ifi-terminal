@@ -1,0 +1,20 @@
+name: ifi-terminal-app
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pandas
+  - numpy
+  - scipy
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - jupyter
+  - ipython
+  - pytest
+  - pyyaml
+  - unittest2
+  - pip:
+    - yfinance
+    - finnhub-python
+    - praw
