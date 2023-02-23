@@ -2,7 +2,7 @@ name: ifi_terminal
 channels:
   - defaults
 dependencies:
-  - python=3.11
+  - python=3.8
   - pandas
   - numpy
   - scipy
@@ -15,6 +15,7 @@ dependencies:
   - pyyaml
   - unittest2
   - requests
+  - pip
   - pip:
     - yfinance
     - finnhub-python
