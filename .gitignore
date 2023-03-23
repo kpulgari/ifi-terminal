@@ -1,3 +1,4 @@
 config.py
 __pycache__
-src/utils/secrets.py
+secrets.py
+setup.py
