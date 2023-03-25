@@ -1,38 +1,34 @@
 import requests
-from secrets import Reddit_API_SECRET, Reddit_API_Personal_Use_Script, Username, Password
+from secrets import REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD
 
 
-class FinnhubAPI:
-    # note that CLIENT_ID refers to 'personal use script' and SECRET_TOKEN to 'token'
-    auth = requests.auth.HTTPBasicAuth(Reddit_API_Personal_Use_Script, Reddit_API_SECRET)
+class RedditAPI:
+    def __init__(self, token, client_id, username, password):
+        auth = requests.auth.HTTPBasicAuth(client_id, token)
+        data = {'grant_type': 'password',
+                'username': username,
+                'password': password}
 
-    # here we pass our login method (password), username, and password
-    data = {'grant_type': 'password',
-            'username': Username,
-            'password': Password}
+        headers = {'User-Agent': 'MyBot/0.0.1'}
+        
+        res = requests.post('https://www.reddit.com/api/v1/access_token',
+                            auth=auth, data=data, headers=headers)
+        
+        TOKEN = res.json()['access_token']
+        self.headers = {**headers, **{'Authorization': f"bearer {TOKEN}"}}
 
-    # setup our header info, which gives reddit a brief description of our app
-    headers = {'User-Agent': 'MyBot/0.0.1'}
+        # while the token is valid (~2 hours) we just add headers=headers to our requests
+        requests.get('https://oauth.reddit.com/api/v1/me', headers=headers)
 
-    # send our request for an OAuth token
-    res = requests.post('https://www.reddit.com/api/v1/access_token',
-                        auth=auth, data=data, headers=headers)
-
-    # convert response to JSON and pull access_token value
-    TOKEN = res.json()['access_token']
-
-
-    # add authorization to our headers dictionary
-    headers = {**headers, **{'Authorization': f"bearer {TOKEN}"}}
-
-    # while the token is valid (~2 hours) we just add headers=headers to our requests
-    requests.get('https://oauth.reddit.com/api/v1/me', headers=headers)
-
-    res = requests.get("https://oauth.reddit.com/r/python/hot",
-                    headers=headers)
-
-    print(res.json())  # let's see what we get
+    def get_headers(self, subreddit):
+        res = requests.get(subreddit,
+                        headers=self.headers)
+        
+        return res.json()
 
 if __name__ == "__main__":
     print("Executing Reddit_api_interactor.py")
+    reddit_api = RedditAPI(REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD)
+    print(reddit_api.get_headers("https://oauth.reddit.com/r/python/hot"))
+
     
