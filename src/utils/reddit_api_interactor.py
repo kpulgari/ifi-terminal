@@ -20,7 +20,7 @@ class RedditAPI:
         # while the token is valid (~2 hours) we just add headers=headers to our requests
         requests.get('https://oauth.reddit.com/api/v1/me', headers=headers)
 
-    def get_headers(self, subreddit):
+    def get_headers(self, subreddit) -> None:
         res = requests.get(subreddit,
                         headers=self.headers)
 
