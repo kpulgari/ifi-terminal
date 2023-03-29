@@ -1,4 +1,4 @@
-import requests
+import requests, json
 from secrets import REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD
 
 
@@ -23,12 +23,14 @@ class RedditAPI:
     def get_headers(self, subreddit):
         res = requests.get(subreddit,
                         headers=self.headers)
-        
-        return res.json()
+
+        with open("temp.json", "w") as outfile:
+            json_obj = json.dumps(res.json(), indent=2)
+            outfile.write(json_obj)
 
 if __name__ == "__main__":
     print("Executing Reddit_api_interactor.py")
     reddit_api = RedditAPI(REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD)
-    print(reddit_api.get_headers("https://oauth.reddit.com/r/python/hot"))
+    reddit_api.get_headers("https://oauth.reddit.com/r/wallstreetbets/hot")
 
     
