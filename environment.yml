@@ -15,6 +15,7 @@ dependencies:
   - pyyaml
   - unittest2
   - requests
+  - rich
   - pip
   - pip:
     - yfinance

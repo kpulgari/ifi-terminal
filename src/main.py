@@ -2,7 +2,6 @@ from utils.yfinance_api_interactor import YFinanceAPI
 # from utils.reddit_api_interactor import RedditAPI
 # from utils.finnhub_api_interactor import FinnhubAPI
 
-import rich
 from rich.console import Console
 from rich.table import Table
 
@@ -13,8 +12,18 @@ if __name__ == "__main__":
     table.add_column("Day High", style="green")
     table.add_column("Day Low", style="red")
 
-    yfinance_api = YFinanceAPI("AMZN")
-    table.add_row("AMZN", str(yfinance_api.get_high()), str(yfinance_api.get_low()))
+    while True:
+        stock = input("Enter stock: ")
 
+        if stock == "break":
+            break
+
+        try:
+            yfinance_api = YFinanceAPI(stock)
+            table.add_row(stock.upper(), str(yfinance_api.get_high()), str(yfinance_api.get_low()))
+        except:
+            print("Invalid stock!")
+    
     console = Console()
     console.print(table)
+    
