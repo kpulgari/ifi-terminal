@@ -41,13 +41,20 @@ if __name__ == "__main__":
 
         table.add_column("STOCK", style="bold cyan")
 
+        column_cache = []
+
         for selection in selection_arr:
             column = fast_info_choices[int(selection) - 1]
-            style = Style(color=Color.from_rgb(random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)))
-            style = colorMapping.get(column, style)
-            table.add_column(fast_info_choices[int(selection) - 1].upper(), style=style, justify="center")   
 
-        cache = []
+            if column in column_cache:
+                pass
+            else:
+                style = Style(color=Color.from_rgb(random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)))
+                style = colorMapping.get(column, style)
+                table.add_column(column.upper(), style=style, justify="center")  
+                column_cache.append(column) 
+
+        stock_cache = []
 
         while True:
             stock = input("Enter stock: ").upper()
@@ -56,13 +63,13 @@ if __name__ == "__main__":
                 break
             try:
                 try: 
-                    if stock in cache:
+                    if stock in stock_cache:
                         raise ValueError()
                     
                     yfinance_api = YFinanceAPI(stock)
-                    row_values = [stock] + [str(yfinance_api.fast_info[fast_info_choices[int(choice) - 1]]) for choice in selection_arr]
+                    row_values = [stock] + [str(yfinance_api.fast_info[column]) for column in column_cache]
                     table.add_row(*row_values)
-                    cache.append(stock)
+                    stock_cache.append(stock)
                 except:
                     print(f"{stock} has already been added!")
 
