@@ -1,5 +1,7 @@
-from secrets import FINNHUB_API_KEY as API_KEY
 import finnhub
+
+if __name__ == "__main__":
+    from secrets import FINNHUB_API_KEY as API_KEY
 
 
 class FinnhubAPI:

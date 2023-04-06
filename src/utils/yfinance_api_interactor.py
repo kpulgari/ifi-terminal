@@ -10,12 +10,15 @@ class YFinanceAPI:
     
     def get_low(self) -> float:
         return self.fast_info['dayLow']
+    
+    def get_history(self, period):
+        return self.ticker.history(period)
 
-# rename secrets.py
 if __name__ == "__main__":
     print("Executing yfinance_api_interactor.py")
     yfinance_api = YFinanceAPI("AMZN")
-    print(yfinance_api.get_high(), yfinance_api.get_low())
+    hist = yfinance_api.get_history("1day")
+    print(yfinance_api.fast_info['dayLow'])
 
 
 
