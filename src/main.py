@@ -20,9 +20,11 @@ if __name__ == "__main__":
     selection = input("Select [Y] for yfinance or [R] for reddit: ").upper()
 
     if selection == "Y":
+        # Retrieving available stock parameters
         yfinance_api_sample = YFinanceAPI("APPL")
         fast_info_choices = [choice for choice in yfinance_api_sample.fast_info]
 
+        valid_selection = False
         choices = ""
         count = 1
         
@@ -30,9 +32,25 @@ if __name__ == "__main__":
             choices += f"{count}. {choice}\n"
             count += 1
 
-        user_choice_selection = input(f"{choices}Please enter a comma-separated list to select filters: ").replace(" ", "")
-        selection_arr = user_choice_selection.split(",")
+        # Validating user selections
+        while not valid_selection:
+            user_choice_selection = input(f"{choices}Please enter a comma-separated list of integers within the range [1, {count - 1}] to select filters: ").replace(" ", "")
+            selection_arr = user_choice_selection.split(",")
 
+            try:
+                for selection in selection_arr:
+                    x = int(selection)
+                    assert x > 0 and x < count
+                
+                valid_selection = True
+            except:
+                print(f"Invalid selection! Enter a comma-separated list of integers within the valid range [1, {count - 1}] to select filters.")
+                time.sleep(3)
+
+        # Removing duplicate selections
+        selection_arr = [*set(selection_arr)]
+
+        # Maps columns to specified colors
         colorMapping = {
             "dayHigh": "green",
             "dayLow": "red",
@@ -40,19 +58,20 @@ if __name__ == "__main__":
             "fiftyDayAverage": "purple"
         }
 
-
+        # Stock validation - checking if valid stock and if already in cache
         stock_cache = []
 
         while True:
-            stock = input("Enter stock: ").upper()
-
+            stock = input("Enter stock (enter 'break' to stop): ").upper()
             if stock == "BREAK":
                 break
             try:
+                yfinance_api = YFinanceAPI(stock)
+                yfinance_api.get_high()
+
                 try: 
                     if stock in stock_cache:
                         raise ValueError()
-                    
                     stock_cache.append(stock)
                 except:
                     print(f"{stock} has already been added!")
@@ -60,19 +79,19 @@ if __name__ == "__main__":
             except Exception as e:
                 print("Invalid stock!")
 
-
-
+        # Generates new table for live stock updates
         def generate_table() -> Table:
             column_cache = []
-            """Make a new table."""
-            table = Table(title="YFinance Testing")
+
+            table = Table(title="Stock Data")
             table.add_column("STOCK", style="bold cyan")
+
             for selection in selection_arr:
                 column = fast_info_choices[int(selection) - 1]
                 
-
                 style = Style(color=Color.from_rgb(random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)))
                 style = colorMapping.get(column, style)
+
                 table.add_column(column.upper(), style=style, justify="center")  
                 column_cache.append(column) 
 
@@ -80,18 +99,31 @@ if __name__ == "__main__":
                 yfinance_api = YFinanceAPI(stock)
                 row_values = [stock] + [str(yfinance_api.fast_info[column]) for column in column_cache]
                 table.add_row(*row_values)
-            return table
 
+            return table
         
+        # Asking user for time constraints
+        selected_time = False
+        while not selected_time:
+            try:
+                frequency = int(input("Please enter how often (seconds) to update table: "))
+                duration = int(input("Please enter the lifespan (seconds) of the table: "))
+                assert frequency > 0 and duration > 0
+
+                selected_time = True
+            except:
+                print("Please enter positive integers only.")
+        
+        # Updates table with live data
         with Live(generate_table(), refresh_per_second=4) as live:
-            for _ in range(5):
-                time.sleep(5)
+            for _ in range(duration // frequency):
+                time.sleep(frequency)
                 live.update(generate_table())
-                print("updated")
 
     elif selection == "R":
         reddit_api = RedditAPI(REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD)
 
+        # Asking user for input
         subreddit = input("Enter a subreddit: ")
         post_limit = int(input("Enter the hot post limit: "))
         post_arr = reddit_api.get_hot_posts(subreddit, post_limit)
@@ -102,6 +134,7 @@ if __name__ == "__main__":
         table.add_column("Post")
         table.add_column("Comments")
 
+        # Generating table
         for post in post_arr:
             comment_arr = reddit_api.get_post_top_comments(post, comment_limit)
             comment_str = ""
