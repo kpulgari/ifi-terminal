@@ -9,7 +9,6 @@ from rich.style import Style
 from rich.live import Live
 from rich.table import Table
 
-from utils.secrets import REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD
 from utils.secrets import FINNHUB_API_KEY as API_KEY
 
 import random
@@ -121,6 +120,11 @@ if __name__ == "__main__":
                 live.update(generate_table())
 
     elif selection == "R":
+        # User login
+        REDDIT_API_TOKEN = input("Enter your Reddit API Token: ")
+        REDDIT_API_CLIENT_ID = input("Enter your Reddit API Client ID: ")
+        REDDIT_USERNAME = input("Enter your Reddit username: ")
+        REDDIT_PASSWORD = input("Enter your Reddit password: ")
         reddit_api = RedditAPI(REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD)
 
         # Asking user for input

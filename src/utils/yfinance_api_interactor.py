@@ -19,39 +19,3 @@ if __name__ == "__main__":
     yfinance_api = YFinanceAPI("AMZN")
     hist = yfinance_api.get_history("1day")
     print(yfinance_api.fast_info['dayLow'])
-
-
-
-
-
-# # get all stock info (slow)
-# msft.info
-# # fast access to subset of stock info (opportunistic)
-# print(msft.fast_info['dayHigh'])
-
-# # get historical market data
-# hist = msft.history(period="1mo")
-
-# # show meta information about the history (requires history() to be called first)
-# msft.history_metadata
-
-# # show actions (dividends, splits, capital gains)
-# msft.actions
-# msft.dividends
-# msft.splits
-# msft.capital_gains  # only for mutual funds & etfs
-
-# # show share count
-# # - accurate time-series count:
-# msft.get_shares_full(start="2022-01-01", end=None)
-
-# # show holders
-# msft.major_holders
-# msft.institutional_holders
-# msft.mutualfund_holders
-
-# # show options expirations
-# msft.options
-
-# # show news
-# msft.news
