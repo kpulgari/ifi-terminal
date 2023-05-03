@@ -8,6 +8,7 @@ While a similar application - Bloomberg Terminal - provides similar features and
 ## Technical Architecture
 To provide a comprehensive understanding of the architecture of our application, we created a diagram of our program's components and their interactions:
 ### Architecture Diagram
+<img width="889" alt="Screenshot 2023-05-03 at 4 56 17 PM" src="https://user-images.githubusercontent.com/90290549/236059501-a16a5165-55a7-4775-82e8-fc78b1f08a9b.png">
 
 ### Backend:
 
