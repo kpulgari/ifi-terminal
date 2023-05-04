@@ -64,8 +64,12 @@ def render_yfinance_terminal():
     stock_cache = []
 
     while True:
-        stock = input("Enter stock (enter 'break' to stop): ").upper()
+        stock = input("Enter stock (enter 'break' to stop) or enter 'default' to use our watchlist: ").upper()
         if stock == "BREAK":
+            break
+        elif stock == "DEFAULT":
+            stock = "AAPL,MSFT,GOOG,AMZN,TSLA,JPM,NVDA,META,UNH,DIS"
+            stock_cache = stock.split(",")
             break
         try:
             yfinance_api = YFinanceAPI(stock)
@@ -179,8 +183,12 @@ def render_finnhub_terminal():
         api_obj = FinnhubAPI(API_KEY)
 
         while True:
-            stock = input("Enter stock (enter 'break' to stop): , invalid entries will be ignored").upper()
+            stock = input("Enter stock (enter 'break' to stop) or enter 'default' to use our watchlist: , invalid entries will be ignored").upper()
             if stock == "BREAK":
+                break
+            elif stock == "DEFAULT":
+                stock = "AAPL,MSFT,GOOG,AMZN,TSLA,JPM,NVDA,META,UNH,DIS"
+                stock_cache = stock.split(",")
                 break
             try:
                 api_obj.get_quote(stock)
