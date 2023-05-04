@@ -9,15 +9,63 @@ from rich.style import Style
 from rich.live import Live
 from rich.table import Table
 
+from utils.secrets import REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD
 from utils.secrets import FINNHUB_API_KEY as API_KEY
 
 import random
 import time
 
 
+def render_default_terminal():
+    pass
+
+
+def render_yfinance_terminal():
+    pass
+
+
+def render_reddit_terminal():
+    # User login
+    # REDDIT_API_TOKEN = input("Enter your Reddit API Token: ")
+    # REDDIT_API_CLIENT_ID = input("Enter your Reddit API Client ID: ")
+    # REDDIT_USERNAME = input("Enter your Reddit username: ")
+    # REDDIT_PASSWORD = input("Enter your Reddit password: ")
+    reddit_api = RedditAPI(REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD)
+
+    # Asking user for input
+    subreddit = input("Enter a subreddit: ")
+    post_limit = int(input("Enter the hot post limit: "))
+    post_arr = reddit_api.get_hot_posts(subreddit, post_limit)
+
+    comment_limit = int(input("Enter the comment limit: "))
+
+    table = Table(title="Reddit Testing")
+    table.add_column("Post")
+    table.add_column("Comments")
+
+    # Generating table
+    for post in post_arr:
+        comment_arr = reddit_api.get_post_top_comments(post, comment_limit)
+        comment_str = ""
+
+        for comment in comment_arr:
+            comment_str += comment.body + "\n"
+
+        style = Style(color=Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+
+        table.add_row(post.title, comment_str, style=style)
+    
+    console = Console()
+    console.print(table)
+
+
+def render_finnhub_terminal():
+    pass
+
+
 if __name__ == "__main__":
     while True:
-        selection = input("Select [Y] for <yfinance> (traditional financial information), [R] for reddit data, [F] for <yfinance> technical analysis data (crypto and stocks):, any press anything else to exit application ").upper()
+        selection = input("Select [D] for default ifi_terminal display, Select [Y] for <yfinance> (traditional financial information), [R] for reddit data, [F] for <yfinance> modern indicators (crypto/ news and technical analyisis): press anything else to exit application ").upper()
 
         if selection == "Y":
             # Retrieving available stock parameters
@@ -121,42 +169,19 @@ if __name__ == "__main__":
                     live.update(generate_table())
 
         elif selection == "R":
-            # User login
-            REDDIT_API_TOKEN = input("Enter your Reddit API Token: ")
-            REDDIT_API_CLIENT_ID = input("Enter your Reddit API Client ID: ")
-            REDDIT_USERNAME = input("Enter your Reddit username: ")
-            REDDIT_PASSWORD = input("Enter your Reddit password: ")
-            reddit_api = RedditAPI(REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD)
+            render_reddit_terminal()
 
-            # Asking user for input
-            subreddit = input("Enter a subreddit: ")
-            post_limit = int(input("Enter the hot post limit: "))
-            post_arr = reddit_api.get_hot_posts(subreddit, post_limit)
+        elif selection == "D":
+            render_default_terminal()
 
-            comment_limit = int(input("Enter the comment limit: "))
-
-            table = Table(title="Reddit Testing")
-            table.add_column("Post")
-            table.add_column("Comments")
-
-            # Generating table
-            for post in post_arr:
-                comment_arr = reddit_api.get_post_top_comments(post, comment_limit)
-                comment_str = ""
-
-                for comment in comment_arr:
-                    comment_str += comment.body + "\n"
-
-                style = Style(color=Color.from_rgb(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
-
-                table.add_row(post.title, comment_str, style=style)
-            
-            console = Console()
-            console.print(table)
+        elif selection == "F":
+            render_finnhub_terminal()
 
         else:
             print("Exiting Program!")
             break
+
+
 
 
 
