@@ -17,11 +17,28 @@ import time
 
 
 def render_default_terminal():
-    pass
+    print("Welcome to the ifi_terminal's decision helper where we currently offer 4 major services: ")
+    print("1. Latest news about the financial market")
+    print("2. Crypto Currency Data")
+    print("3. Technical Indicators for thsoe who would like to perform technical analysis")
+    print("4. Analtical bots: currently we only have one option, but we are woking on more!")
+    choice = input("Please enter the number of the service you would like to use: ")
+
+    if choice == "1":
+        pass
+    elif choice == "2":
+        pass
+    elif choice == "3":
+        pass
+    elif choice == "4":
+        pass
+    else:
+        print("Invalid choice! Exiting decision helper!")
 
 
 def render_yfinance_terminal():
     # Retrieving available stock parameters
+    print("Welcome to the ifi_terminal's fundamental financial information terminal, here we offer a myriad of live information as indicated below! ")
     yfinance_api_sample = YFinanceAPI("APPL")
     fast_info_choices = [choice for choice in yfinance_api_sample.fast_info]
 
@@ -164,7 +181,7 @@ def render_finnhub_terminal():
 if __name__ == "__main__":
     while True:
         try:
-            selection = input("Select [D] for default ifi_terminal display, Select [Y] for <yfinance> (traditional financial information), [R] for reddit data, [F] for <yfinance> modern indicators (crypto/ news and technical analyisis): press anything else to exit application ").upper()
+            selection = input("Select \n [D] for default ifi_terminal display \n  [Y] for <yfinance> (traditional financial information) \n [R] for reddit data \n [F] for <yfinance> modern indicators (crypto/ news/ technical tickers) and a sample trend bot: press anything else to exit application ").upper()
 
             if selection == "D":
                 render_default_terminal()
