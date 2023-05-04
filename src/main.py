@@ -21,7 +21,105 @@ def render_default_terminal():
 
 
 def render_yfinance_terminal():
-    pass
+    # Retrieving available stock parameters
+    yfinance_api_sample = YFinanceAPI("APPL")
+    fast_info_choices = [choice for choice in yfinance_api_sample.fast_info]
+
+    valid_selection = False
+    choices = ""
+    count = 1
+    
+    for choice in fast_info_choices:
+        choices += f"{count}. {choice}\n"
+        count += 1
+
+    # Validating user selections
+    while not valid_selection:
+        user_choice_selection = input(f"{choices}Please enter a comma-separated list of integers within the range [1, {count - 1}] to select filters: ").replace(" ", "")
+        selection_arr = user_choice_selection.split(",")
+
+        try:
+            for selection in selection_arr:
+                x = int(selection)
+                assert x > 0 and x < count
+            
+            valid_selection = True
+        except:
+            print(f"Invalid selection! Enter a comma-separated list of integers within the valid range [1, {count - 1}] to select filters.")
+            time.sleep(3)
+
+    # Removing duplicate selections
+    selection_arr = [*set(selection_arr)]
+
+    # Maps columns to specified colors
+    colorMapping = {
+        "dayHigh": "green",
+        "dayLow": "red",
+        "exchange": "blue",
+        "fiftyDayAverage": "purple"
+    }
+
+    # Stock validation - checking if valid stock and if already in cache
+    stock_cache = []
+
+    while True:
+        stock = input("Enter stock (enter 'break' to stop): ").upper()
+        if stock == "BREAK":
+            break
+        try:
+            yfinance_api = YFinanceAPI(stock)
+            yfinance_api.get_high()
+
+            try: 
+                if stock in stock_cache:
+                    raise ValueError()
+                stock_cache.append(stock)
+            except:
+                print(f"{stock} has already been added!")
+
+        except Exception as e:
+            print("Invalid stock!")
+
+    # Generates new table for live stock updates
+    def generate_table() -> Table:
+        column_cache = []
+
+        table = Table(title="Stock Data")
+        table.add_column("STOCK", style="bold cyan")
+
+        for selection in selection_arr:
+            column = fast_info_choices[int(selection) - 1]
+            
+            style = Style(color=Color.from_rgb(random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)))
+            style = colorMapping.get(column, style)
+
+            table.add_column(column.upper(), style=style, justify="center")  
+            column_cache.append(column) 
+
+        for stock in stock_cache:
+            yfinance_api = YFinanceAPI(stock)
+            row_values = [stock] + [str(yfinance_api.fast_info[column]) for column in column_cache]
+            table.add_row(*row_values)
+
+        return table
+    
+    # Asking user for time constraints
+    selected_time = False
+    while not selected_time:
+        try:
+            frequency = int(input("Please enter how often (seconds) to update table: "))
+            duration = int(input("Please enter the lifespan (seconds) of the table: "))
+            assert frequency > 0 and duration > 0
+
+            selected_time = True
+        except:
+            print("Please enter positive integers only.")
+    
+    # Updates table with live data
+    with Live(generate_table(), refresh_per_second=4) as live:
+        for _ in range(duration // frequency):
+            time.sleep(frequency)
+            live.update(generate_table())
 
 
 def render_reddit_terminal():
@@ -67,112 +165,14 @@ if __name__ == "__main__":
     while True:
         selection = input("Select [D] for default ifi_terminal display, Select [Y] for <yfinance> (traditional financial information), [R] for reddit data, [F] for <yfinance> modern indicators (crypto/ news and technical analyisis): press anything else to exit application ").upper()
 
-        if selection == "Y":
-            # Retrieving available stock parameters
-            yfinance_api_sample = YFinanceAPI("APPL")
-            fast_info_choices = [choice for choice in yfinance_api_sample.fast_info]
-
-            valid_selection = False
-            choices = ""
-            count = 1
-            
-            for choice in fast_info_choices:
-                choices += f"{count}. {choice}\n"
-                count += 1
-
-            # Validating user selections
-            while not valid_selection:
-                user_choice_selection = input(f"{choices}Please enter a comma-separated list of integers within the range [1, {count - 1}] to select filters: ").replace(" ", "")
-                selection_arr = user_choice_selection.split(",")
-
-                try:
-                    for selection in selection_arr:
-                        x = int(selection)
-                        assert x > 0 and x < count
-                    
-                    valid_selection = True
-                except:
-                    print(f"Invalid selection! Enter a comma-separated list of integers within the valid range [1, {count - 1}] to select filters.")
-                    time.sleep(3)
-
-            # Removing duplicate selections
-            selection_arr = [*set(selection_arr)]
-
-            # Maps columns to specified colors
-            colorMapping = {
-                "dayHigh": "green",
-                "dayLow": "red",
-                "exchange": "blue",
-                "fiftyDayAverage": "purple"
-            }
-
-            # Stock validation - checking if valid stock and if already in cache
-            stock_cache = []
-
-            while True:
-                stock = input("Enter stock (enter 'break' to stop): ").upper()
-                if stock == "BREAK":
-                    break
-                try:
-                    yfinance_api = YFinanceAPI(stock)
-                    yfinance_api.get_high()
-
-                    try: 
-                        if stock in stock_cache:
-                            raise ValueError()
-                        stock_cache.append(stock)
-                    except:
-                        print(f"{stock} has already been added!")
-
-                except Exception as e:
-                    print("Invalid stock!")
-
-            # Generates new table for live stock updates
-            def generate_table() -> Table:
-                column_cache = []
-
-                table = Table(title="Stock Data")
-                table.add_column("STOCK", style="bold cyan")
-
-                for selection in selection_arr:
-                    column = fast_info_choices[int(selection) - 1]
-                    
-                    style = Style(color=Color.from_rgb(random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)))
-                    style = colorMapping.get(column, style)
-
-                    table.add_column(column.upper(), style=style, justify="center")  
-                    column_cache.append(column) 
-
-                for stock in stock_cache:
-                    yfinance_api = YFinanceAPI(stock)
-                    row_values = [stock] + [str(yfinance_api.fast_info[column]) for column in column_cache]
-                    table.add_row(*row_values)
-
-                return table
-            
-            # Asking user for time constraints
-            selected_time = False
-            while not selected_time:
-                try:
-                    frequency = int(input("Please enter how often (seconds) to update table: "))
-                    duration = int(input("Please enter the lifespan (seconds) of the table: "))
-                    assert frequency > 0 and duration > 0
-
-                    selected_time = True
-                except:
-                    print("Please enter positive integers only.")
-            
-            # Updates table with live data
-            with Live(generate_table(), refresh_per_second=4) as live:
-                for _ in range(duration // frequency):
-                    time.sleep(frequency)
-                    live.update(generate_table())
+        if selection == "D":
+            render_default_terminal()
+        
+        elif selection == "Y":
+            render_yfinance_terminal()
 
         elif selection == "R":
             render_reddit_terminal()
-
-        elif selection == "D":
-            render_default_terminal()
 
         elif selection == "F":
             render_finnhub_terminal()
