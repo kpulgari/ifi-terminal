@@ -17,23 +17,7 @@ import time
 
 
 def render_default_terminal():
-    print("Welcome to the ifi_terminal's decision helper where we currently offer 4 major services: ")
-    print("1. Latest news about the financial market")
-    print("2. Crypto Currency Data")
-    print("3. Technical Indicators for thsoe who would like to perform technical analysis")
-    print("4. Analtical bots: currently we only have one option, but we are woking on more!")
-    choice = input("Please enter the number of the service you would like to use: ")
-
-    if choice == "1":
-        pass
-    elif choice == "2":
-        pass
-    elif choice == "3":
-        pass
-    elif choice == "4":
-        pass
-    else:
-        print("Invalid choice! Exiting decision helper!")
+    pass
 
 
 def render_yfinance_terminal():
@@ -175,13 +159,66 @@ def render_reddit_terminal():
 
 
 def render_finnhub_terminal():
-    pass
+    print("Welcome to the ifi_terminal's decision helper where we currently offer 4 major services: ")
+    print("1. Latest news about the financial market")
+    print("2. Crypto Currency Data")
+    print("3. Technical Indicators for thsoe who would like to perform technical analysis")
+    print("4. Analytical bots: currently we only have one option, but we are woking on more!")
+    choice = input("Please enter the number of the service you would like to use: ")
+
+    if choice == "1":
+        pass
+    elif choice == "2":
+        pass
+    elif choice == "3":
+        pass
+    elif choice == "4":
+        print("Sample bot 0: Is the low of the day higher than the closing price of the previous day?")
+        stock_cache = []
+
+        api_obj = FinnhubAPI(API_KEY)
+
+        while True:
+            stock = input("Enter stock (enter 'break' to stop): , invalid entries will be ignored").upper()
+            if stock == "BREAK":
+                break
+            try:
+                api_obj.get_quote(stock)
+
+
+                try: 
+                    if stock in stock_cache:
+                        raise ValueError()
+                    stock_cache.append(stock)
+                except:
+                    print(f"{stock} has already been added!")
+
+            except Exception as e:
+                print("Invalid stock!")
+
+        table = Table(title="Decision Helper")
+        table.add_column("Stock")
+        table.add_column("Trend Details")
+
+        for stock in stock_cache:
+            status = api_obj.get_quote(stock)
+            
+            if status["l"] > status["pc"]:
+                table.add_row(stock, "Low of the day is higher than the closing price of the previous day", style="green")
+            else:
+                table.add_row(stock, "Low of the day is lower than the closing price of the previous day", style="red")
+
+        console = Console()
+        console.print(table)
+            
+    else:
+        print("Invalid choice! Exiting decision helper!")
 
 
 if __name__ == "__main__":
     while True:
         try:
-            selection = input("Select \n [D] for default ifi_terminal display \n  [Y] for <yfinance> (traditional financial information) \n [R] for reddit data \n [F] for <yfinance> modern indicators (crypto/ news/ technical tickers) and a sample trend bot: press anything else to exit application ").upper()
+            selection = input("Select \n [D] for default ifi_terminal display \n [Y] for <yfinance> (traditional financial information) \n [R] for reddit data \n [F] for <yfinance> modern indicators (crypto/ news/ technical tickers) and a sample trend bot: press anything else to exit application ").upper()
 
             if selection == "D":
                 render_default_terminal()
