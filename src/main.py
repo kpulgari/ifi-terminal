@@ -163,23 +163,27 @@ def render_finnhub_terminal():
 
 if __name__ == "__main__":
     while True:
-        selection = input("Select [D] for default ifi_terminal display, Select [Y] for <yfinance> (traditional financial information), [R] for reddit data, [F] for <yfinance> modern indicators (crypto/ news and technical analyisis): press anything else to exit application ").upper()
+        try:
+            selection = input("Select [D] for default ifi_terminal display, Select [Y] for <yfinance> (traditional financial information), [R] for reddit data, [F] for <yfinance> modern indicators (crypto/ news and technical analyisis): press anything else to exit application ").upper()
 
-        if selection == "D":
-            render_default_terminal()
-        
-        elif selection == "Y":
-            render_yfinance_terminal()
+            if selection == "D":
+                render_default_terminal()
+            
+            elif selection == "Y":
+                render_yfinance_terminal()
 
-        elif selection == "R":
-            render_reddit_terminal()
+            elif selection == "R":
+                render_reddit_terminal()
 
-        elif selection == "F":
-            render_finnhub_terminal()
+            elif selection == "F":
+                render_finnhub_terminal()
 
-        else:
-            print("Exiting Program!")
-            break
+            else:
+                print("Exiting Program!")
+                break
+        except:
+            print("ERROR!")
+            print("Some issue has occured, please try again")
 
 
 
