@@ -183,7 +183,7 @@ if __name__ == "__main__":
                 break
         except:
             print("ERROR!")
-            print("Some issue has occured, please try again")
+            print("Some issue has occured, please try again!")
 
 
 
