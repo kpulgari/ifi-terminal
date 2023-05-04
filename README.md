@@ -28,7 +28,7 @@ Our frontend uses the `rich` library from Python to generate elegant and persona
 
 - `main.py`: All group members worked on the frontend module of the `main.py` app, which uses the `rich` library to generate tables and the `Live` module to update them in real-time.
 
-## Installation Instructions
+## Installation  and Running Instructions
 
 1. Clone the repository from GitHub
 2. Navigate to root directory and run following commands to set up Conda virtual environment and install dependencies:
@@ -36,8 +36,9 @@ Our frontend uses the `rich` library from Python to generate elegant and persona
    conda env create -f environment.yml
    conda activate ifi_terminal
    ```
-3. Run `bash ifi_terminal` to start the program
-4. Follow the directions on screen to interact with the program!
+3. **Security Step:** *There is a file in utils named secret_template.py, please fill in the information and rename the file as secrets.py* This will allow developers to make changes to the application without revealing access tokens (as its part of gitignore), and users don't need to perform any other authentication.
+4. Run `bash ifi_terminal` to start the program
+5. Follow the directions on screen to interact with the program!
 
 ## Group Roles
 
