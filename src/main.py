@@ -17,7 +17,52 @@ import time
 
 
 def render_default_terminal():
-    pass
+    # Retrieving parameters
+    yfinance_api_sample = YFinanceAPI("APPL")
+    fast_info_choices = []
+    selection_arr = [1, 2, 4, 15, 16, 17]
+
+    for choice in yfinance_api_sample.fast_info:
+        try:
+            yfinance_api_sample.fast_info[choice]
+            fast_info_choices.append(choice)
+        except:
+            continue
+    
+    stock = "AAPL,MSFT,GOOG,AMZN,TSLA,JPM,NVDA,META,UNH,DIS"
+    stock_cache = stock.split(",")
+
+    # Generating table
+    def generate_table_main() -> Table:
+        column_cache = []
+
+        table = Table(title="Stock Data")
+        table.add_column("STOCK", style="bold cyan")
+
+        for selection in selection_arr:
+            column = fast_info_choices[int(selection) - 1]
+            
+            style = Style(color=Color.from_rgb(random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)))
+
+            table.add_column(column.upper(), style=style, justify="center")  
+            column_cache.append(column) 
+
+        for stock in stock_cache:
+            yfinance_api = YFinanceAPI(stock)
+            row_values = [stock] + [str(yfinance_api.fast_info[column]) for column in column_cache]
+            table.add_row(*row_values)
+
+        return table
+    
+    # Time constraints
+    frequency = 3
+    duration = 300
+    
+    # Updates table with live data
+    with Live(generate_table_main(), refresh_per_second=4) as live:
+        for _ in range(duration // frequency):
+            time.sleep(frequency)
+            live.update(generate_table_main())
 
 
 def render_yfinance_terminal():
@@ -257,7 +302,7 @@ def render_finnhub_terminal(choice):
 
 if __name__ == "__main__":
     while True:
-        try:
+        # try:
             selection = input("Select: \n [D] for default ifi_terminal display \n [Y] for <yfinance> (traditional financial information) \n [R] for <reddit> data \n [F] for <finnhub> Trend analysis bots \n Press any other key to exit application: ").upper()
 
             if selection == "D":
@@ -281,9 +326,9 @@ if __name__ == "__main__":
             else:
                 print("Exiting Program!")
                 break
-        except:
-            print("ERROR!")
-            print("Some issue has occured, please try again!")
+        # except:
+        #     print("ERROR!")
+        #     print("Some issue has occured, please try again!")
 
 
 
