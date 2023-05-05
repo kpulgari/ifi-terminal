@@ -164,10 +164,10 @@ def render_reddit_terminal():
 
 def render_finnhub_terminal():
     print("Welcome to the ifi_terminal's decision helper where we currently offer 4 trend analysis")
-    print("1. Bot 1: Rank in order of volatility (high to low), based on the percent change")
-    print("2. Bot 2: ")
-    print("3. Bot 3: ")
-    print("4. Bot 4: Is low of the day is higher than the closing price of the previous day?")
+    print("1. Bot 1: Display percent change for select stocks")
+    print("2. Bot 2: Bull/ Bear indicator chart")
+    print("3. Bot 3: Trading gap identification - fundamental for sentiment analysis")
+    print("4. Bot 4: Optimistic Trend Check: Is low of the day is higher than the closing price of the previous day?")
     choice = input("Please enter the number of the service you would like to use: ")
 
     api_obj = FinnhubAPI(API_KEY)
@@ -211,21 +211,46 @@ def render_finnhub_terminal():
                 table.add_row(stock, str(status["d"]), str(percent_change), style="red")
 
     elif choice == "2":
-        pass
+        table = Table(title="Decision Helper - Bot 2")
+        table.add_column("Stock")
+        table.add_column("Bull/Bear Indicator")
+        table.add_column("Opening Price")
+        table.add_column("Current Price")
+        for stock in stock_cache:
+            status = api_obj.get_quote(stock)
+            if status["c"] > status["o"]:
+                table.add_row(stock, "Bull", str(status["o"]), str(status["c"]), style="green")
+            else:
+                table.add_row(stock, "Bear", str(status["o"]), str(status["c"]), style="red")
 
     elif choice == "3":
-        pass
+        table = Table(title="Decision Helper - Bot 3")
+        table.add_column("Stock")
+        table.add_column("Trading Gap - sentiment change in stock and hence gap in opening and closing price")
+        table.add_column("Opening Price")
+        table.add_column("Previous Closing Price")
+        table.add_column("Gap")
+        for stock in stock_cache:
+            status = api_obj.get_quote(stock)
+            if status["o"] > status["pc"]:
+                table.add_row(stock, "Trading Gap with positive sentiment", str(status["o"]), str(status["pc"]), str(status["o"] - status["pc"]), style="green")
+            else:
+                table.add_row(stock, "Trading Gap with pegative sentiment", str(status["o"]), str(status["pc"]), str(status["o"] - status["pc"]), style="red")
 
     elif choice == "4":
         table = Table(title="Decision Helper - Bot 4")
         table.add_column("Stock")
         table.add_column("Trend Details")
+        table.add_column("low")
+        table.add_column("previous close")
+        table.add_column("Magnitudnal difference per stock")
         for stock in stock_cache:
             status = api_obj.get_quote(stock)
             if status["l"] > status["pc"]:
-                table.add_row(stock, "Low of the day is higher than the closing price of the previous day", style="green")
+                table.add_row(stock, "Low of the day is higher than the closing price of the previous day", str(status['l']), str(status['pc']), str(status["l"] - status["pc"]), style="green")
+
             else:
-                table.add_row(stock, "Low of the day is lower than the closing price of the previous day", style="red")
+                table.add_row(stock, "Low of the day is lower than the closing price of the previous day", str(status['l']), str(status['pc']), str(status["l"] - status["pc"]), style="red")
             
     else:
         print("Invalid choice! Exiting decision helper!")
