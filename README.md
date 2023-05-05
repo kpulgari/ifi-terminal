@@ -18,11 +18,11 @@ To provide a comprehensive understanding of the architecture of our application,
 
 Our backend consists of three modules that interact with different APIs: `yFinance`, `Finnhub`, and `Reddit`. Each module is stored in our `utils` folder and has specific functions to fetch and process data from their respective APIs. The `main.py` app imports these modules and calls their functions as needed to retrieve data for display on the frontend tables.
 
-- `yFinance` Interactor: We use this for getting more fundamental information that has to do with classical trading principles. It has live updates and provided near instantaneous information for investors to make trades.
-- `Finnhub` Interactor: We use this for newer more experimental trading methods. We provide analytical bots, that draw insight from the market and present them in an easy to understand visual manner.
-- `Reddit` Interactor: This fetches popular posts and comments from specified subreddits, and can be expanded to even draw insights from these.
+- `yFinance` Interactor: Provides fundamental information related to classical trading principles. It has live updates and provides near-instantaneous information for investors to make trades.
+- `Finnhub` Interactor: Used for newer, more experimental trading methods. We provide analytical bots that draw insights from the market and present them in an easy-to-understand visual manner.
+- `Reddit` Interactor: Fetches popular posts and comments from specified subreddits, and can be expanded to draw insights from these.
 
-Finally we have a bash script the executed the code as needed: `ifi_terminal.sh`
+Finally, we have a bash script `ifi_terminal.sh` that executes the code as needed.
 
 ### Frontend:
 
@@ -38,16 +38,16 @@ Our frontend uses the `rich` library from Python to generate elegant and persona
    conda env create -f environment.yml
    conda activate ifi_terminal
    ```
-3. **Security Step:** *There is a file in utils named secret_template.py, please fill in the information and rename the file as secrets.py* This will allow developers to make changes to the application without revealing access tokens (as its part of gitignore), and users don't need to perform any other authentication.
-4. Run `bash ifi_terminal.sh` to start the program
-5. Follow the directions on screen to interact with the program!
+3. **Security Step:** *There is a file named `secret_template.py` in the utils directory. Please fill in the necessary information and rename the file to `secrets.py`. This will allow developers to make changes to the application without revealing access tokens (since it's part of the `.gitignore` file), and users won't need to perform any additional authentication.*
+4. To start the program, run bash `ifi_terminal.sh`
+5. Follow the directions in the terminal to interact with the program!
 
 ## Group Roles
 
-**Siddarth Aananth**: Responsible for `Finnhub` API interactor and `main.py` functionalities
+**Siddarth Aananth**: Responsible for `Finnhub` API interactor and `main.py` frontend
 
-**Suchit Bapatla**: Responsible for `Reddit` API interactor and `main.py` functionalities
+**Suchit Bapatla**: Responsible for `Reddit` API interactor and `main.py` frontend
 
-**Sambuddha Biswas**: Responsible for `Reddit` API interactor and `main.py` functionalities
+**Sambuddha Biswas**: Responsible for `Reddit` API interactor and `main.py` frontend
 
-**Kaushik Pulgari**: Responsible for `yFinance` API interactor and `main.py` functionalities
+**Kaushik Pulgari**: Responsible for `yFinance` API interactor and `main.py` frontend
