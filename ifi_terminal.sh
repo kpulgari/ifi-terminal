@@ -7,7 +7,7 @@
 
 # This program runs the ifi_terminal program without navigating to src.
 
-# Note: To run this code, use 'bash ifi_terminal' instead of granting execute access, which may not work consistently on all devices. It's easier to run using 'bash ifi_terminal.sh'.
+# Note: To run this code, use 'bash ifi_terminal.sh' instead of granting execute access, which may not work consistently on all devices.
 
 # Navigate to the src directory and run main.py.
 echo "Running ifi_terminal..."
