@@ -42,6 +42,9 @@ Our frontend uses the `rich` library from Python to generate elegant and persona
 4. To start the program, run `bash ifi_terminal.sh`
 5. Follow the directions in the terminal to interact with the program!
 
+## Future Developments:
+Our application offers a significant advantage by providing access to nearly all types of financial market data. As we continue to enhance the app, we can expand its capabilities to encompass additional tools like predictive models, technical analysis, and other features that traders may find useful in making decisions. Although our current GUI is terminal-based and displays text-only information, we plan to incorporate charts, guiding features, and predictive models in future iterations while keeping it lightweight and easy to use on the terminal.
+
 ## Group Roles
 
 **Siddarth Aananth**: Responsible for `Finnhub` API interactor and `main.py` frontend
