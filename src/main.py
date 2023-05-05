@@ -18,72 +18,6 @@ import random
 import time
 
 
-def render_default_terminal():
-    # Retrieving parameters
-    yfinance_api_sample = YFinanceAPI("APPL")
-    fast_info_choices = []
-    selection_arr = [2, 3, 5, 16, 17, 18]
-
-    for choice in yfinance_api_sample.fast_info:
-        try:
-            yfinance_api_sample.fast_info[choice]
-            fast_info_choices.append(choice)
-        except:
-            continue
-    
-    stock = "AAPL,MSFT,GOOG,AMZN,TSLA,JPM,NVDA,META,UNH,DIS"
-    stock_cache = stock.split(",")
-
-    # Generating table
-    def generate_table_main() -> Table:
-        column_cache = []
-
-        table = Table(title="Stock Data")
-        table.add_column("STOCK", style="bold cyan")
-
-        for selection in selection_arr:
-            column = fast_info_choices[int(selection) - 1]
-            
-            style = Style(color=Color.from_rgb(random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)))
-
-            table.add_column(column.upper(), style=style, justify="center")  
-            column_cache.append(column) 
-
-        for stock in stock_cache:
-            yfinance_api = YFinanceAPI(stock)
-            row_values = [stock] + [str(yfinance_api.fast_info[column]) for column in column_cache]
-            table.add_row(*row_values)
-
-        return table
-    
-    # Time constraints
-    frequency = 3
-    duration = 300
-
-    # layout = Layout()
-
-    # layout.split_column(
-    # Layout(name="upper"),
-    # Layout(name="lower"))
-
-    # layout["lower"].split_row(
-    # Layout(name="left"),
-    # Layout(name="middle-left"),
-    # Layout(name="middle-right"),
-    # Layout(name="right"),)
-
-    # print(layout)
-    render_finnhub_terminal(1)
-    render_finnhub_terminal(2)
-    render_finnhub_terminal(3)
-    render_finnhub_terminal(4)
-    # Updates table with live data
-    with Live(generate_table_main(), refresh_per_second=4) as live:
-        for _ in range(duration // frequency):
-            time.sleep(frequency)
-            live.update(generate_table_main())
-
-
 def render_yfinance_terminal():
     # Retrieving available stock parameters
     print("Welcome to the ifi_terminal's fundamental financial information terminal, here we offer a myriad of live information as indicated below! ")
@@ -273,7 +207,6 @@ def render_finnhub_terminal(choice, default_terminal=False):
                 table.add_row(stock, str(status["d"]), str(percent_change), style="green")
             else:
                 table.add_row(stock, str(status["d"]), str(percent_change), style="red")
-
     elif choice == "2":
         table = Table(title="Decision Helper - Bot 2")
         table.add_column("Stock")
@@ -286,7 +219,6 @@ def render_finnhub_terminal(choice, default_terminal=False):
                 table.add_row(stock, "Bull", str(status["o"]), str(status["c"]), style="green")
             else:
                 table.add_row(stock, "Bear", str(status["o"]), str(status["c"]), style="red")
-
     elif choice == "3":
         table = Table(title="Decision Helper - Bot 3")
         table.add_column("Stock")
@@ -300,14 +232,13 @@ def render_finnhub_terminal(choice, default_terminal=False):
                 table.add_row(stock, "Trading Gap with positive sentiment", str(status["o"]), str(status["pc"]), str(status["o"] - status["pc"]), style="green")
             else:
                 table.add_row(stock, "Trading Gap with pegative sentiment", str(status["o"]), str(status["pc"]), str(status["o"] - status["pc"]), style="red")
-
     elif choice == "4":
         table = Table(title="Decision Helper - Bot 4")
         table.add_column("Stock")
         table.add_column("Trend Details")
-        table.add_column("low")
-        table.add_column("previous close")
-        table.add_column("Magnitudnal difference per stock")
+        table.add_column("Low")
+        table.add_column("Previous close")
+        table.add_column("Magnitudinal difference per stock")
         for stock in stock_cache:
             status = api_obj.get_quote(stock)
             if status["l"] > status["pc"]:
@@ -315,16 +246,87 @@ def render_finnhub_terminal(choice, default_terminal=False):
 
             else:
                 table.add_row(stock, "Low of the day is lower than the closing price of the previous day", str(status['l']), str(status['pc']), str(status["l"] - status["pc"]), style="red")
-            
     else:
         print("Invalid choice! Exiting decision helper!")
 
     return table
 
+def render_default_terminal():
+    # Retrieving parameters
+    yfinance_api_sample = YFinanceAPI("APPL")
+    fast_info_choices = []
+    selection_arr = [2, 3, 5, 16, 17, 18]
+
+    for choice in yfinance_api_sample.fast_info:
+        try:
+            yfinance_api_sample.fast_info[choice]
+            fast_info_choices.append(choice)
+        except:
+            continue
+    
+    stock = "AAPL,MSFT,GOOG,AMZN,TSLA,JPM,NVDA,META,UNH,DIS"
+    stock_cache = stock.split(",")
+
+    # Generating table
+    def generate_table_main() -> Table:
+        column_cache = []
+
+        table = Table(title="Stock Data")
+        table.add_column("STOCK", style="bold cyan")
+
+        for selection in selection_arr:
+            column = fast_info_choices[int(selection) - 1]
+            
+            style = Style(color=Color.from_rgb(random.randint(100, 255), random.randint(100, 255), random.randint(100, 255)))
+
+            table.add_column(column.upper(), style=style, justify="center")  
+            column_cache.append(column) 
+
+        for stock in stock_cache:
+            yfinance_api = YFinanceAPI(stock)
+            row_values = [stock] + [str(yfinance_api.fast_info[column]) for column in column_cache]
+            table.add_row(*row_values)
+
+        return table
+    
+    # Time constraints
+    frequency = 3
+    duration = 300
+
+    # layout = Layout()
+
+    # layout.split_column(
+    # Layout(name="upper"),
+    # Layout(name="lower"))
+
+    # layout["lower"].split_row(
+    # Layout(name="left"),
+    # Layout(name="middle-left"),
+    # Layout(name="middle-right"),
+    # Layout(name="right"),)
+
+    # print(layout)
+    t = render_finnhub_terminal("1", default_terminal=True)
+    t2 = render_finnhub_terminal("2", True)
+    t3 = render_finnhub_terminal("3", True)
+    t4 = render_finnhub_terminal("4", True)
+
+    console = Console()
+    console.print(t)
+    console.print(t2)
+    console.print(t3)
+    console.print(t4)
+    
+    # Updates table with live data
+    with Live(generate_table_main(), refresh_per_second=4) as live:
+        for _ in range(duration // frequency):
+            time.sleep(frequency)
+            live.update(generate_table_main())
+
 
 if __name__ == "__main__":
     while True:
-        # try:
+        try:
             selection = input("Select: \n [D] for default ifi_terminal display \n [Y] for <yfinance> (traditional financial information) \n [R] for <reddit> data \n [F] for <finnhub> Trend analysis bots \n Press any other key to exit application: ").upper()
 
             if selection == "D":
@@ -345,15 +347,15 @@ if __name__ == "__main__":
                 choice = input("Please enter the number of the service you would like to use: ")
 
                 console = Console()
-                table = render_finnhub_terminal(choice)
+                table = render_finnhub_terminal(choice, False)
                 console.print(table)
 
             else:
                 print("Exiting Program!")
                 break
-        # except:
-        #     print("ERROR!")
-        #     print("Some issue has occured, please try again!")
+        except:
+            print("ERROR!")
+            print("Some issue has occured, please try again!")
 
 
 
