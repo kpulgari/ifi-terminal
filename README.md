@@ -39,10 +39,20 @@ Our frontend uses the `rich` library from Python to generate elegant and persona
    conda activate ifi_terminal
    ```
 3. **Security Step:** *There is a file named `secret_template.py` in the utils directory. Please fill in the necessary information and rename the file to `secrets.py`. This will allow developers to make changes to the application without revealing access tokens (since it's part of the `.gitignore` file), and users won't need to perform any additional authentication.*
-4. To start the program, run `bash ifi_terminal.sh`
+4. To start the program:
+   1. Run `bash ifi_terminal.sh`
+   2. If that does not work and you get some error try the following commands:
+      ```
+      cd src
+      py main.py
+
+      # or try
+      python main.py
+      ```
 5. Follow the directions in the terminal to interact with the program!
 
 ## Future Developments:
+
 Our application offers a significant advantage by providing access to nearly all types of financial market data. As we continue to enhance the app, we can expand its capabilities to encompass additional tools like predictive models, technical analysis, and other features that traders may find useful in making decisions. Although our current GUI is terminal-based and displays text-only information, we plan to incorporate charts, guiding features, and predictive models in future iterations while keeping it lightweight and easy to use on the terminal.
 
 ## Group Roles
