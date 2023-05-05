@@ -231,7 +231,7 @@ def render_finnhub_terminal(choice, default_terminal=False):
             if status["o"] > status["pc"]:
                 table.add_row(stock, "Trading Gap with positive sentiment", str(status["o"]), str(status["pc"]), str(status["o"] - status["pc"]), style="green")
             else:
-                table.add_row(stock, "Trading Gap with pegative sentiment", str(status["o"]), str(status["pc"]), str(status["o"] - status["pc"]), style="red")
+                table.add_row(stock, "Trading Gap with negative sentiment", str(status["o"]), str(status["pc"]), str(status["o"] - status["pc"]), style="red")
     elif choice == "4":
         table = Table(title="Decision Helper - Bot 4")
         table.add_column("Stock")
