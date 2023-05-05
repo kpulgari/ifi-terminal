@@ -165,14 +165,7 @@ def render_reddit_terminal():
     console.print(table)
 
 
-def render_finnhub_terminal():
-    print("Welcome to the ifi_terminal's decision helper where we currently offer 4 trend analysis")
-    print("1. Bot 1: Display percent change for select stocks")
-    print("2. Bot 2: Bull/ Bear indicator chart")
-    print("3. Bot 3: Trading gap identification - fundamental for sentiment analysis")
-    print("4. Bot 4: Optimistic Trend Check: Is low of the day is higher than the closing price of the previous day?")
-    choice = input("Please enter the number of the service you would like to use: ")
-
+def render_finnhub_terminal(choice):
     api_obj = FinnhubAPI(API_KEY)
 
     stock_cache = []
@@ -277,7 +270,13 @@ if __name__ == "__main__":
                 render_reddit_terminal()
 
             elif selection == "F":
-                render_finnhub_terminal()
+                print("Welcome to the ifi_terminal's decision helper where we currently offer 4 trend analysis")
+                print("1. Bot 1: Display percent change for select stocks")
+                print("2. Bot 2: Bull/ Bear indicator chart")
+                print("3. Bot 3: Trading gap identification - fundamental for sentiment analysis")
+                print("4. Bot 4: Optimistic Trend Check: Is low of the day is higher than the closing price of the previous day?")
+                choice = input("Please enter the number of the service you would like to use: ")
+                render_finnhub_terminal(choice)
 
             else:
                 print("Exiting Program!")
