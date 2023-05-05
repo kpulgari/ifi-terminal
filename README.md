@@ -39,7 +39,7 @@ Our frontend uses the `rich` library from Python to generate elegant and persona
    conda activate ifi_terminal
    ```
 3. **Security Step:** *There is a file named `secret_template.py` in the utils directory. Please fill in the necessary information and rename the file to `secrets.py`. This will allow developers to make changes to the application without revealing access tokens (since it's part of the `.gitignore` file), and users won't need to perform any additional authentication.*
-4. To start the program, run bash `ifi_terminal.sh`
+4. To start the program, run `bash ifi_terminal.sh`
 5. Follow the directions in the terminal to interact with the program!
 
 ## Group Roles
