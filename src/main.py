@@ -164,10 +164,10 @@ def render_reddit_terminal():
 
 def render_finnhub_terminal():
     print("Welcome to the ifi_terminal's decision helper where we currently offer 4 trend analysis")
-    print("1. Bot 1: ")
+    print("1. Bot 1: Rank in order of volatility (high to low), based on the percent change")
     print("2. Bot 2: ")
     print("3. Bot 3: ")
-    print("4. Bot 4: ")
+    print("4. Bot 4: Is low of the day is higher than the closing price of the previous day?")
     choice = input("Please enter the number of the service you would like to use: ")
 
     api_obj = FinnhubAPI(API_KEY)
@@ -196,17 +196,30 @@ def render_finnhub_terminal():
         except Exception as e:
             print("Invalid stock!")
 
-    table = Table(title="Decision Helper")
-    table.add_column("Stock")
-    table.add_column("Trend Details")
 
     if choice == "1":
-        pass
+        table = Table(title="Decision Helper - Bot 1")
+        table.add_column("Stock")
+        table.add_column("Change")
+        table.add_column("Percent Change")
+        for stock in stock_cache:
+            status = api_obj.get_quote(stock)
+            percent_change = status["dp"] * 100
+            if percent_change > 0:
+                table.add_row(stock, str(status["d"]), str(percent_change), style="green")
+            else:
+                table.add_row(stock, str(status["d"]), str(percent_change), style="red")
+
     elif choice == "2":
         pass
+
     elif choice == "3":
         pass
+
     elif choice == "4":
+        table = Table(title="Decision Helper - Bot 4")
+        table.add_column("Stock")
+        table.add_column("Trend Details")
         for stock in stock_cache:
             status = api_obj.get_quote(stock)
             if status["l"] > status["pc"]:
