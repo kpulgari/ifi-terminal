@@ -8,6 +8,8 @@ from rich.color import Color
 from rich.style import Style
 from rich.live import Live
 from rich.table import Table
+from rich.layout import Layout
+
 
 from utils.secrets import REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD
 from utils.secrets import FINNHUB_API_KEY as API_KEY
@@ -57,7 +59,24 @@ def render_default_terminal():
     # Time constraints
     frequency = 3
     duration = 300
-    
+
+    # layout = Layout()
+
+    # layout.split_column(
+    # Layout(name="upper"),
+    # Layout(name="lower"))
+
+    # layout["lower"].split_row(
+    # Layout(name="left"),
+    # Layout(name="middle-left"),
+    # Layout(name="middle-right"),
+    # Layout(name="right"),)
+
+    # print(layout)
+    render_finnhub_terminal(1)
+    render_finnhub_terminal(2)
+    render_finnhub_terminal(3)
+    render_finnhub_terminal(4)
     # Updates table with live data
     with Live(generate_table_main(), refresh_per_second=4) as live:
         for _ in range(duration // frequency):
@@ -216,7 +235,7 @@ def render_finnhub_terminal(choice):
     stock_cache = []
 
     while True:
-        stock = input("Enter stock (enter 'break' to stop) or enter 'default' to use our watchlist , invalid entries will be ignored : ").upper()
+        stock = input("Enter stock (enter 'break' to stop) or enter 'default' to use our watchlist, invalid entries will be ignored : ").upper()
         if stock == "BREAK":
             break
         elif stock == "DEFAULT":
@@ -296,8 +315,7 @@ def render_finnhub_terminal(choice):
     else:
         print("Invalid choice! Exiting decision helper!")
 
-    console = Console()
-    console.print(table)
+    return table
 
 
 if __name__ == "__main__":
@@ -321,7 +339,10 @@ if __name__ == "__main__":
                 print("3. Bot 3: Trading gap identification - fundamental for sentiment analysis")
                 print("4. Bot 4: Optimistic Trend Check: Is low of the day is higher than the closing price of the previous day?")
                 choice = input("Please enter the number of the service you would like to use: ")
-                render_finnhub_terminal(choice)
+
+                console = Console()
+                table = render_finnhub_terminal(choice)
+                console.print(table)
 
             else:
                 print("Exiting Program!")
