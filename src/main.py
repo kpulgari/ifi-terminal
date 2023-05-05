@@ -24,7 +24,14 @@ def render_yfinance_terminal():
     # Retrieving available stock parameters
     print("Welcome to the ifi_terminal's fundamental financial information terminal, here we offer a myriad of live information as indicated below! ")
     yfinance_api_sample = YFinanceAPI("APPL")
-    fast_info_choices = [choice for choice in yfinance_api_sample.fast_info]
+    fast_info_choices = []
+
+    for choice in yfinance_api_sample.fast_info:
+        try:
+            yfinance_api_sample.fast_info[choice]
+            fast_info_choices.append(choice)
+        except:
+            continue
 
     valid_selection = False
     choices = ""
@@ -129,10 +136,6 @@ def render_yfinance_terminal():
 
 def render_reddit_terminal():
     # User login
-    # REDDIT_API_TOKEN = input("Enter your Reddit API Token: ")
-    # REDDIT_API_CLIENT_ID = input("Enter your Reddit API Client ID: ")
-    # REDDIT_USERNAME = input("Enter your Reddit username: ")
-    # REDDIT_PASSWORD = input("Enter your Reddit password: ")
     reddit_api = RedditAPI(REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD)
 
     # Asking user for input
@@ -262,7 +265,7 @@ def render_finnhub_terminal():
 if __name__ == "__main__":
     while True:
         try:
-            selection = input("Select \n [D] for default ifi_terminal display \n [Y] for <yfinance> (traditional financial information) \n [R] for reddit data \n [F] for <yfinance> Trend analysis bots: press anything else to exit application ").upper()
+            selection = input("Select: \n [D] for default ifi_terminal display \n [Y] for <yfinance> (traditional financial information) \n [R] for <reddit> data \n [F] for <finnhub> Trend analysis bots \n Press any other key to exit application: ").upper()
 
             if selection == "D":
                 render_default_terminal()
