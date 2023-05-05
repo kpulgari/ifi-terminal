@@ -8,8 +8,6 @@ from rich.color import Color
 from rich.style import Style
 from rich.live import Live
 from rich.table import Table
-from rich.layout import Layout
-
 
 from utils.secrets import REDDIT_API_TOKEN, REDDIT_API_CLIENT_ID, REDDIT_USERNAME, REDDIT_PASSWORD
 from utils.secrets import FINNHUB_API_KEY as API_KEY
@@ -20,7 +18,7 @@ import time
 
 def render_yfinance_terminal():
     # Retrieving available stock parameters
-    print("Welcome to the ifi_terminal's fundamental financial information terminal, here we offer a myriad of live information as indicated below! ")
+    print("Welcome to ifi_terminal's fundamental financial information terminal! We offer a myriad of live stock information as indicated below:")
     yfinance_api_sample = YFinanceAPI("APPL")
     fast_info_choices = []
 
@@ -38,10 +36,12 @@ def render_yfinance_terminal():
     for choice in fast_info_choices:
         choices += f"{count}. {choice}\n"
         count += 1
+    
+    time.sleep(1)
 
     # Validating user selections
     while not valid_selection:
-        user_choice_selection = input(f"{choices}Please enter a comma-separated list of integers within the range [1, {count - 1}] to select filters: ").replace(" ", "")
+        user_choice_selection = input(f"{choices}Please enter a comma-separated list of integers within the range [1, {count - 1}] to select stock filters: ").replace(" ", "")
         selection_arr = user_choice_selection.split(",")
 
         try:
@@ -173,7 +173,7 @@ def render_finnhub_terminal(choice, default_terminal=False):
             stock = "AAPL,MSFT,GOOG,AMZN,TSLA,JPM,NVDA,META,UNH,DIS"
             stock_cache = stock.split(",")
             break
-        stock = input("Enter stock (enter 'break' to stop) or enter 'default' to use our watchlist, invalid entries will be ignored : ").upper()
+        stock = input("Enter stock (enter 'break' to stop) or enter 'default' to use our watchlist, invalid entries will be ignored: ").upper()
         if stock == "BREAK":
             break
         elif stock == "DEFAULT":
@@ -238,7 +238,7 @@ def render_finnhub_terminal(choice, default_terminal=False):
         table.add_column("Trend Details")
         table.add_column("Low")
         table.add_column("Previous close")
-        table.add_column("Magnitudinal difference per stock")
+        table.add_column("Price change")
         for stock in stock_cache:
             status = api_obj.get_quote(stock)
             if status["l"] > status["pc"]:
@@ -293,29 +293,18 @@ def render_default_terminal():
     frequency = 3
     duration = 300
 
-    # layout = Layout()
-
-    # layout.split_column(
-    # Layout(name="upper"),
-    # Layout(name="lower"))
-
-    # layout["lower"].split_row(
-    # Layout(name="left"),
-    # Layout(name="middle-left"),
-    # Layout(name="middle-right"),
-    # Layout(name="right"),)
-
-    # print(layout)
-    t = render_finnhub_terminal("1", default_terminal=True)
+    # Retrieving bot tables
+    t1 = render_finnhub_terminal("1", True)
     t2 = render_finnhub_terminal("2", True)
     t3 = render_finnhub_terminal("3", True)
     t4 = render_finnhub_terminal("4", True)
 
+    # Printing bot tables
     console = Console()
-    console.print(t)
+    console.print(t1)
     console.print(t2)
     console.print(t3)
-    console.print(t4)
+    console.print(t4)    
     
     # Updates table with live data
     with Live(generate_table_main(), refresh_per_second=4) as live:
@@ -327,7 +316,7 @@ def render_default_terminal():
 if __name__ == "__main__":
     while True:
         try:
-            selection = input("Select: \n [D] for default ifi_terminal display \n [Y] for <yfinance> (traditional financial information) \n [R] for <reddit> data \n [F] for <finnhub> Trend analysis bots \n Press any other key to exit application: ").upper()
+            selection = input("Select: \n [D] for default ifi_terminal display \n [Y] for <yfinance> (traditional financial information) \n [R] for <reddit> data \n [F] for <finnhub> (trend analysis bots) \nPress any other key to exit application: ").upper()
 
             if selection == "D":
                 render_default_terminal()
@@ -339,12 +328,12 @@ if __name__ == "__main__":
                 render_reddit_terminal()
 
             elif selection == "F":
-                print("Welcome to the ifi_terminal's decision helper where we currently offer 4 trend analysis")
+                print("Welcome to ifi_terminal's decision helper! We currently offer 4 trend analyses:")
                 print("1. Bot 1: Display percent change for select stocks")
-                print("2. Bot 2: Bull/ Bear indicator chart")
+                print("2. Bot 2: Bull/Bear indicator chart")
                 print("3. Bot 3: Trading gap identification - fundamental for sentiment analysis")
                 print("4. Bot 4: Optimistic Trend Check: Is low of the day is higher than the closing price of the previous day?")
-                choice = input("Please enter the number of the service you would like to use: ")
+                choice = input("Please enter the number of the bot you would like to view: ")
 
                 console = Console()
                 table = render_finnhub_terminal(choice, False)
