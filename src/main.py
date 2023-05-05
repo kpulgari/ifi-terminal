@@ -20,7 +20,7 @@ def render_default_terminal():
     # Retrieving parameters
     yfinance_api_sample = YFinanceAPI("APPL")
     fast_info_choices = []
-    selection_arr = [1, 2, 4, 15, 16, 17]
+    selection_arr = [2, 3, 5, 16, 17, 18]
 
     for choice in yfinance_api_sample.fast_info:
         try:
