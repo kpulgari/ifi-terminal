@@ -19,7 +19,7 @@ To provide a comprehensive understanding of the architecture of our application,
 Our backend consists of three modules that interact with different APIs: `yFinance`, `Finnhub`, and `Reddit`. Each module is stored in our `utils` folder and has specific functions to fetch and process data from their respective APIs. The `main.py` app imports these modules and calls their functions as needed to retrieve data for display on the frontend tables.
 
 - `yFinance` Interactor: We use this for getting more fundamental information that has to do with classical trading principles. It has live updates and provided near instantaneous information for investors to make trades.
-- `Finnhub` Interactor: We use this for newer more experimental trading methods and financial instruments. We provide technical analysis data, live news and have also included a decision bot, which provides usefull trends to investors. We plan to keep expanding this by inlcuding features like sentiment analysis, predictive implementation of technical analysis and several other tools.
+- `Finnhub` Interactor: We use this for newer more experimental trading methods. We provide analytical bots, that draw insight from the market and present them in an easy to understand visual manner.
 - `Reddit` Interactor: This fetches popular posts and comments from specified subreddits, and can be expanded to even draw insights from these.
 
 Finally we have a bash script the executed the code as needed: `ifi_terminal.sh`
