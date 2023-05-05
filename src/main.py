@@ -235,12 +235,16 @@ def render_finnhub_terminal(choice, default_terminal=False):
     stock_cache = []
 
     while True:
-        stock = input("Enter stock (enter 'break' to stop) or enter 'default' to use our watchlist, invalid entries will be ignored : ").upper()
-        if default_terminal | (stock == "DEFAULT"):
+        if default_terminal:
             stock = "AAPL,MSFT,GOOG,AMZN,TSLA,JPM,NVDA,META,UNH,DIS"
             stock_cache = stock.split(",")
             break
-        elif stock == "BREAK":
+        stock = input("Enter stock (enter 'break' to stop) or enter 'default' to use our watchlist, invalid entries will be ignored : ").upper()
+        if stock == "BREAK":
+            break
+        elif stock == "DEFAULT":
+            stock = "AAPL,MSFT,GOOG,AMZN,TSLA,JPM,NVDA,META,UNH,DIS"
+            stock_cache = stock.split(",")
             break
         try:
             api_obj.get_quote(stock)
