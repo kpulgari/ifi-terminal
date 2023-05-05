@@ -229,18 +229,18 @@ def render_reddit_terminal():
     console.print(table)
 
 
-def render_finnhub_terminal(choice):
+def render_finnhub_terminal(choice, default_terminal=False):
     api_obj = FinnhubAPI(API_KEY)
 
     stock_cache = []
 
     while True:
         stock = input("Enter stock (enter 'break' to stop) or enter 'default' to use our watchlist, invalid entries will be ignored : ").upper()
-        if stock == "BREAK":
-            break
-        elif stock == "DEFAULT":
+        if default_terminal | (stock == "DEFAULT"):
             stock = "AAPL,MSFT,GOOG,AMZN,TSLA,JPM,NVDA,META,UNH,DIS"
             stock_cache = stock.split(",")
+            break
+        elif stock == "BREAK":
             break
         try:
             api_obj.get_quote(stock)
