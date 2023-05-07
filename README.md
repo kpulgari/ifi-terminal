@@ -1,4 +1,4 @@
-# IFI Terminal
+[![IFI Terminal](https://user-images.githubusercontent.com/90290549/236655150-322af4b7-b1e3-4fb0-afdf-95629e3d1302.png)](https://drive.google.com/file/d/1jaHfjvsNJg4x4zcLPFz05_uAKi_7Y6Ny/view)
 
 ## Project Introduction
 
