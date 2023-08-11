@@ -3,21 +3,10 @@ channels:
   - defaults
 dependencies:
   - python=3.8
-  - pandas
-  - numpy
-  - scipy
-  - matplotlib
-  - seaborn
-  - scikit-learn
-  - jupyter
-  - ipython
-  - pytest
-  - pyyaml
-  - unittest2
   - requests
   - rich
   - pip
   - pip:
-    - yfinance
-    - finnhub-python
-    - praw
+      - yfinance==0.2.13
+      - finnhub-python
+      - praw
