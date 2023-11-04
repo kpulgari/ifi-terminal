@@ -2,8 +2,6 @@
 
 IFI (Instant-Financial-Information) Terminal is a easy-to-use software application that simplifies and streamlines the process of accessing real-time financial information. IFI Terminal includes both static and personalized tables using Python's `rich` library to display information on stocks from both `yFinance` and `Finnhub` APIs, as well as a module that utilizes `Reddit` API to fetch popular posts from financial subreddits like `r/wallstreetbets`.
 
-While a similar application - Bloomberg Terminal - provides similar features and tools for financial professionals, our application is much more lightweight and user-friendly, making it ideal for new investors or those who want a simpler way to view financial information. Additionally, IFI Terminal can be run directly in the user's terminal without requiring separate software installation or subscription.
-
 ## Demo
 
 [![IFI Terminal](https://user-images.githubusercontent.com/90290549/236655150-322af4b7-b1e3-4fb0-afdf-95629e3d1302.png)](https://drive.google.com/file/d/1jaHfjvsNJg4x4zcLPFz05_uAKi_7Y6Ny/view)
